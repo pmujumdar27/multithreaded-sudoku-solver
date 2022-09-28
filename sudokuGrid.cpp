@@ -49,3 +49,35 @@ bool SudokuGrid::solveRecursive(int i, int j) {
 bool SudokuGrid::checkvalid(int r, int c, char val) {
     return (!row[r][val] && !col[c][val] && !cube[r/3][c/3][val]);
 }
+
+fstream& operator>>(fstream& os, SudokuGrid& gridIn) {
+    char tmp;
+
+    if (os.is_open()) {
+        getline(os, gridIn.m_strGridName);
+    }
+
+    for(int i=0; i<9; i++) {
+        for(int j=0; j<9; j++) {
+            gridIn.gridElement[i][j] = os.get();
+        }
+        tmp = os.get();
+        // read the `\n` at the end of each line of grid into garbage variable
+        // this prevents us from getting `\n` in our grid
+    }
+
+    return os;
+}
+
+fstream& operator<<(fstream& os, SudokuGrid& gridOut) {
+    os << gridOut.m_strGridName << "\n";
+
+    for(int i=0; i<9; i++) {
+        for(int j=0; j<9; j++) {
+            os << gridOut.gridElement[i][j];
+        }
+        os << "\n";
+    }
+    
+    return os;
+}

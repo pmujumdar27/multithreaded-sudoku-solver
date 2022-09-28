@@ -10,38 +10,6 @@ using namespace std;
 fstream inFile, outFile;
 mutex inFileMutex, outFileMutex;
 
-fstream& operator>>(fstream& os, SudokuGrid& gridIn) {
-    char tmp;
-
-    if (os.is_open()) {
-        getline(os, gridIn.m_strGridName);
-    }
-
-    for(int i=0; i<9; i++) {
-        for(int j=0; j<9; j++) {
-            gridIn.gridElement[i][j] = os.get();
-        }
-        tmp = os.get();
-        // read the `\n` at the end of each line of grid into garbage variable
-        // this prevents us from getting `\n` in our grid
-    }
-
-    return os;
-}
-
-fstream& operator<<(fstream& os, SudokuGrid& gridOut) {
-    os << gridOut.m_strGridName << "\n";
-
-    for(int i=0; i<9; i++) {
-        for(int j=0; j<9; j++) {
-            os << gridOut.gridElement[i][j];
-        }
-        os << "\n";
-    }
-    
-    return os;
-}
-
 void solveSudokuPuzzles(int tid) {
     do {
         SudokuGrid sg;
@@ -75,11 +43,11 @@ int main(int argc, char* argv[]) {
 
     unsigned int numThreads = thread::hardware_concurrency();
 
-    // check single threaded speed
+    // check single worker thread speed
     // unsigned int numThreads = 2;
 
-    cout<<"Max no. of threads that can run = "<<numThreads<<"\n";
-    cout<<"Spawning max - 1 threads\n";
+    cout<<"Max no. of threads that can run-> Max = "<<numThreads<<"\n";
+    cout<<"Spawning Max - 1 = "<<numThreads-1<<" worker threads\n";
 
     vector<thread*> threads;
 
